@@ -22,4 +22,4 @@ jobs:
       run: docker build -t bhagadevops/my-flask-app:latest .
 
     - name: Push Docker Image
-      run: docker push babum-collab/my-flask-app:latest
+      run: docker push bhagadevops/my-flask-app:latest
