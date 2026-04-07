@@ -5,10 +5,11 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
+
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -18,8 +19,18 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build Docker Image
-      run: docker build -t bhagadevops/my-flask-app:latest .
+    - name: Build and Push Docker Image (SHA version)
+      run: |
+        docker buildx build \
+          --platform linux/amd64 \
+          -t bhagadevops/my-flask-app:${{ github.sha }} \
+          --push .
 
-    - name: Push Docker Image
-      run: docker push bhagadevops/my-flask-app:latest
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ec2-user
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          bash ~/scripts/deploy.sh ${{ github.sha }}
