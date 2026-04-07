@@ -33,4 +33,4 @@ jobs:
         username: ec2-user
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          bash ~/scripts/deploy.sh ${{ github.sha }}
+          bash ~/home/ec2-user/scripts/deploy.sh ${{ github.sha }}
