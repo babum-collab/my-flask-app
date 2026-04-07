@@ -1,14 +1,15 @@
+import os
 from flask import Flask
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Hello from GREEN!!!!"
+    return f"Helloooo from {os.getenv('ENV', 'UNKNOWN')} 🚀"
 
 @app.route("/health")
 def health():
-    return {"status": "ok"}, 200
+    return {"status": "ok"}, 200    
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)    
+    app.run(host="0.0.0.0", port=5000)
